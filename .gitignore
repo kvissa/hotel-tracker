@@ -1,0 +1,8 @@
+token.json
+credentials.json
+profiles.json
+previous_prices.json
+__pycache__/
+*.pyc
+.env
+.DS_Store
