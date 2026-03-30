@@ -367,14 +367,17 @@ def run_report(user=None):
         report.append(seg)
 
     save_prices(prev)
-    send_email(build_email(report), f"Hotel Report — {datetime.now().strftime('%b %d')}")
-    if alerts:
-        send_email(
-            build_email(report, True, "<br>".join(alerts)),
-            f"⚠ PRICE ALERT — {datetime.now().strftime('%b %d %H:%M')}"
-        )
-    return report   # returned so Flask dashboard can cache it
+    try:
+        send_email(build_email(report), f"Hotel Report — {datetime.now().strftime('%b %d')}")
+        if alerts:
+            send_email(
+                build_email(report, True, "<br>".join(alerts)),
+                f"⚠ PRICE ALERT — {datetime.now().strftime('%b %d %H:%M')}"
+            )
+    except Exception as e:
+        print(f"Email skipped - Gmail not configured yet: {e}")
 
+    return report
 # ── Scheduler (runs when executed directly, not via Flask) ────────────────────
 if __name__ == "__main__":
     freq = REPORT_FREQ
